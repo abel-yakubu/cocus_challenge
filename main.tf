@@ -77,12 +77,12 @@ resource "aws_security_group" "awslab_public_security_group" {
     description = "Allow incoming SSH connections"
   }
 
-  ingress {
-    from_port = 0
-    to_port   = 65535
-    protocol  = "icmp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
+  # ingress {
+  #   from_port = 0
+  #   to_port   = 65535
+  #   protocol  = "icmp"
+  #   cidr_blocks = ["0.0.0.0/0"]
+  # }
   
 }
 
@@ -115,6 +115,7 @@ resource "aws_security_group" "awslab_private_security_group" {
 resource "aws_instance" "awslab_webserver" {
   ami           = "ami-06e85d4c3149db26a"
   instance_type = var.instance_type
+  key_name      = "webserver"
   subnet_id     = aws_subnet.awslab_subnet_public.id
   vpc_security_group_ids = [aws_security_group.awslab_public_security_group.id]
   tags = {
@@ -129,6 +130,7 @@ resource "aws_instance" "awslab_webserver" {
 resource "aws_instance" "awslab_db_server" {
   ami           = "ami-06e85d4c3149db26a"
   instance_type = var.instance_type
+  key_name      = "db_server"
   subnet_id     = aws_subnet.awslab_subnet_private.id
   vpc_security_group_ids = [aws_security_group.awslab_private_security_group.id]
   tags = {
